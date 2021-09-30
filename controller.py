@@ -1,3 +1,4 @@
+import os
 import random
 from view import *
 
@@ -109,6 +110,7 @@ def bet_options():
 
 
 def start():
+    os.system('setterm -background blue -foreground black -store')
     clear()
     global shoe
     global balance
