@@ -1,7 +1,7 @@
 import os
 import random
 from view import *
-
+from model.shoe import Shoe
 
 def create_shoe():
     values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
@@ -14,11 +14,13 @@ def create_shoe():
                 sh.append({"card": values[x], "number": number[x], "suit": suit})
     random.shuffle(sh)
     return sh
-
+shoe = create_shoe()
 
 def set_balance():
     balance0 = 1000.00
     return balance0
+
+balance = set_balance()
 
 
 def get_count(p_cards):
@@ -34,22 +36,24 @@ def get_count(p_cards):
     return count1, count2
 
 
-def initial_deal(dealer, player, shoe):
+def initial_deal(dealer, player):
     player.append(shoe.pop())
     dealer.append(shoe.pop())
     player.append(shoe.pop())
     dealer.append(shoe.pop())
-    return dealer, player, shoe
+    return dealer, player
 
+def new_draw(balance=balance):
+    my_cards = []
+    dealers_cards = []
+    balance -= bet_options()
+    show_newdraw()
+    dealers_cards, my_cards = initial_deal(dealers_cards, my_cards)
+    show_cards(dealers_cards,True,my_cards,balance)
 
 def stay():
     print("Player stays")
 
-
-def hit():
-    print("Player hits")
-    my_cards.append(shoe.pop())
-    print(len(shoe))
 
 
 def double():
@@ -67,8 +71,11 @@ def menu_options(shoe, player, dealer, balance):
         choice = str(input())
         if choice == "0":
             clear()
-            hit()
-            show_cards(dealer, True, player, balance)
+            result = ""
+            if result == "busted":
+                print("sneed")
+                show_busted(balance=balance)
+                new_draw()
         elif choice == "1":
             clear()
             stay()
@@ -108,20 +115,21 @@ def bet_options():
         else:
             print("Choice not valid")
 
-
-def start():
-    os.system('setterm -background blue -foreground black -store')
-    clear()
-    global shoe
-    global balance
-    global my_cards
-    global dealers_cards
-    balance = set_balance()
-    shoe = create_shoe()
+def round(balance=balance):
     my_cards = []
     dealers_cards = []
-    print_welcome()
-    dealers_cards, my_cards, shoe = initial_deal(dealers_cards, my_cards, shoe)
+    dealers_cards, my_cards = initial_deal(dealers_cards, my_cards)
     balance -= bet_options()
     show_cards(dealers_cards, True, my_cards, balance)
     menu_options(shoe, my_cards, dealers_cards, balance)
+
+def start():
+    os.system('setterm -background green -foreground black -store')
+    clear()
+    #global sh
+    #sh = Shoe()
+
+
+
+
+
